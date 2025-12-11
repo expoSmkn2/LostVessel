@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3k846f2htp6d"]
+[gd_scene load_steps=12 format=3 uid="uid://b3k846f2htp6d"]
 
 [ext_resource type="Script" uid="uid://cfo757oey1b7c" path="res://assets/scripts/player_ctrl.gd" id="1_cfgap"]
 [ext_resource type="Texture2D" uid="uid://cuxwpqjqh4bew" path="res://assets/SATYR_sprite_sheet/SPRITE_SHEET.png" id="1_i3c7k"]
@@ -49,7 +49,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_cfgap"]
 resource_name = "idle"
-length = 2.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -108,8 +107,36 @@ tracks/0/keys = {
 "values": [Rect2(3, 35, 27, 27), Rect2(35, 35, 27, 27), Rect2(67, 35, 27, 27), Rect2(99, 35, 27, 27), Rect2(131, 35, 27, 27), Rect2(163, 35, 27, 27), Rect2(195, 35, 27, 27), Rect2(227, 35, 27, 27), Rect2(227, 35, 27, 27)]
 }
 
+[sub_resource type="Animation" id="Animation_h4qwe"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animator/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(3, 99, 27, 27), Rect2(35, 99, 27, 27), Rect2(67, 99, 27, 27), Rect2(99, 99, 27, 27), Rect2(131, 99, 27, 27), Rect2(163, 99, 27, 27), Rect2(195, 99, 27, 27), Rect2(195, 99, 27, 27)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animator/AnimationPlayer:speed_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [4.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ifqy8"]
 _data = {
+&"Attack": SubResource("Animation_h4qwe"),
 &"RESET": SubResource("Animation_jn7ie"),
 &"fall": SubResource("Animation_1rsa0"),
 &"idle": SubResource("Animation_cfgap"),
@@ -147,7 +174,9 @@ texture = ExtResource("1_i3c7k")
 region_enabled = true
 region_rect = Rect2(3, 35, 27, 27)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Hitbox" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_ifqy8")
+
+[connection signal="animation_finished" from="animator/AnimationPlayer" to="animator" method="_on_animation_player_animation_finished"]
